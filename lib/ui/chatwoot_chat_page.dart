@@ -345,7 +345,7 @@ class _ChatwootChatState extends State<ChatwootChat> {
     types.PreviewData previewData,
   ) {
     final index = _messages.indexWhere((element) => element.id == message.id);
-    final updatedMessage = _messages[index].copyWith(previewData: previewData);
+    final updatedMessage = (_messages[index] as types.TextMessage).copyWith(previewData: previewData);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
@@ -410,15 +410,21 @@ class _ChatwootChatState extends State<ChatwootChat> {
               padding: EdgeInsets.only(
                   left: horizontalPadding, right: horizontalPadding),
               child: Chat(
+                inputOptions: InputOptions(
+                  onTextChanged: widget.onTextChanged,
+                ),
                 messages: _messages,
-                onMessageTap: _handleMessageTap,
+                onMessageTap: (context, message) {
+                  _handleMessageTap(message);
+                },
                 onPreviewDataFetched: _handlePreviewDataFetched,
                 onSendPressed: _handleSendPressed,
                 user: _user,
                 onEndReached: widget.onEndReached,
                 onEndReachedThreshold: widget.onEndReachedThreshold,
-                onMessageLongPress: widget.onMessageLongPress,
-                onTextChanged: widget.onTextChanged,
+                onMessageLongPress: (context, message) {
+                  widget.onMessageLongPress?.call(message);
+                },
                 showUserAvatars: widget.showUserAvatars,
                 showUserNames: widget.showUserNames,
                 timeFormat: widget.timeFormat ?? DateFormat.Hm(),

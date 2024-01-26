@@ -7,7 +7,7 @@ const CHATWOOT_AVATAR_COLORS = [CHATWOOT_COLOR_PRIMARY];
 
 /// Default chatwoot chat theme which extends [ChatTheme]
 @immutable
-class ChatwootChatTheme extends ChatTheme {
+class ChatwootChatTheme extends DefaultChatTheme {
   /// Creates a chatwoot chat theme. Use this constructor if you want to
   /// override only a couple of variables.
   const ChatwootChatTheme({
@@ -22,12 +22,12 @@ class ChatwootChatTheme extends ChatTheme {
     Widget? deliveredIcon,
     Widget? documentIcon,
     TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
-      color: NEUTRAL_2,
+      color: neutral2,
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
-    Color errorColor = ERROR,
+    Color errorColor = error,
     Widget? errorIcon,
     Color inputBackgroundColor = Colors.white,
     BorderRadius inputBorderRadius = const BorderRadius.all(
@@ -48,20 +48,20 @@ class ChatwootChatTheme extends ChatTheme {
       height: 1.5,
     ),
     TextStyle receivedMessageCaptionTextStyle = const TextStyle(
-      color: NEUTRAL_2,
+      color: neutral2,
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
     ),
-    Color receivedMessageDocumentIconColor = PRIMARY,
+    Color receivedMessageDocumentIconColor = primary,
     TextStyle receivedMessageLinkDescriptionTextStyle = const TextStyle(
-      color: NEUTRAL_0,
+      color: neutral0,
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle receivedMessageLinkTitleTextStyle = const TextStyle(
-      color: NEUTRAL_0,
+      color: neutral0,
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
@@ -77,27 +77,27 @@ class ChatwootChatTheme extends ChatTheme {
       height: 1.5,
     ),
     TextStyle sentMessageCaptionTextStyle = const TextStyle(
-      color: NEUTRAL_7_WITH_OPACITY,
+      color: neutral7WithOpacity,
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
     ),
-    Color sentMessageDocumentIconColor = NEUTRAL_7,
+    Color sentMessageDocumentIconColor = neutral7,
     TextStyle sentMessageLinkDescriptionTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle sentMessageLinkTitleTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
     List<Color> userAvatarNameColors = CHATWOOT_AVATAR_COLORS,
     TextStyle userAvatarTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
