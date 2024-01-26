@@ -8,10 +8,11 @@
 .buildlog/
 .history
 .svn/
-*.g.dart
+# *.g.dart
 *.mocks.dart
 applicationDocumentsPath
 hive_testing_path
+.fvm/flutter_sdk
 
 # IntelliJ related
 *.iml
