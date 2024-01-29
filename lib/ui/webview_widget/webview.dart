@@ -86,8 +86,8 @@ class _WebviewState extends State<Webview> {
               },
               onWebResourceError: (WebResourceError error) {},
               onNavigationRequest: (NavigationRequest request) {
-                _goToUrl(request.url);
-                return NavigationDecision.prevent;
+                // _goToUrl(request.url);
+                return NavigationDecision.navigate;
               },
             ),
           )
