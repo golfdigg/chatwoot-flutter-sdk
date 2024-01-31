@@ -8,6 +8,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart'
     as webview_flutter_android;
+// Import for iOS features.
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+// #enddocregion platform_imports
 
 ///Chatwoot webview widget
 /// {@category FlutterClientSdk}
@@ -58,7 +61,7 @@ class Webview extends StatefulWidget {
 }
 
 class _WebviewState extends State<Webview> {
-  WebViewController? _controller;
+  late final WebViewController _controller;
   @override
   void initState() {
     super.initState();
@@ -69,7 +72,16 @@ class _WebviewState extends State<Webview> {
         webviewUrl = "${webviewUrl}&cw_conversation=${cwCookie}";
       }
       setState(() {
-        _controller = WebViewController()
+        late final PlatformWebViewControllerCreationParams params;
+        if (WebViewPlatform.instance is WebKitWebViewPlatform) {
+          params = WebKitWebViewControllerCreationParams(
+            allowsInlineMediaPlayback: true,
+            mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+          );
+        } else {
+          params = const PlatformWebViewControllerCreationParams();
+        }
+        _controller = WebViewController.fromPlatformCreationParams(params)
           ..setJavaScriptMode(JavaScriptMode.unrestricted)
           ..setBackgroundColor(Colors.white)
           ..setNavigationDelegate(
