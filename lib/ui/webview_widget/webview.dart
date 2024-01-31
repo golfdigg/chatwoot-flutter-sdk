@@ -61,7 +61,7 @@ class Webview extends StatefulWidget {
 }
 
 class _WebviewState extends State<Webview> {
-  late final WebViewController _controller;
+  WebViewController? _controller;
   @override
   void initState() {
     super.initState();
@@ -120,6 +120,10 @@ class _WebviewState extends State<Webview> {
                 widget.closeWidget?.call();
               }
             }
+          })
+          ..addJavaScriptChannel("parent", onMessageReceived: (JavaScriptMessage jsMessage) {
+            print("Chatwoot parent message received: ${jsMessage.message}");
+            final message = getMessage(jsMessage.message);
           })
           ..loadRequest(Uri.parse(webviewUrl));
 
