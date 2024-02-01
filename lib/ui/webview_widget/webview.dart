@@ -96,9 +96,13 @@ class _WebviewState extends State<Webview> {
               onPageFinished: (String url) async {
                 widget.onLoadCompleted?.call();
               },
-              onWebResourceError: (WebResourceError error) {},
+              onWebResourceError: (WebResourceError error) {
+                print("web Error: ${error.description}");
+              },
               onNavigationRequest: (NavigationRequest request) {
                 // _goToUrl(request.url);
+                print("Navigation request: ${request.url}");
+                print("Navigation request: ${request}");
                 return NavigationDecision.navigate;
               },
             ),
@@ -120,10 +124,6 @@ class _WebviewState extends State<Webview> {
                 widget.closeWidget?.call();
               }
             }
-          })
-          ..addJavaScriptChannel("parent", onMessageReceived: (JavaScriptMessage jsMessage) {
-            print("Chatwoot parent message received: ${jsMessage.message}");
-            final message = getMessage(jsMessage.message);
           })
           ..loadRequest(Uri.parse(webviewUrl));
 
