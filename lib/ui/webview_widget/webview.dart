@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:chatwoot_sdk/chatwoot_sdk.dart';
 import 'package:chatwoot_sdk/ui/webview_widget/utils.dart';
@@ -110,9 +111,11 @@ class _WebviewState extends State<Webview> {
           ..addJavaScriptChannel("ReactNativeWebView",
               onMessageReceived: (JavaScriptMessage jsMessage) {
             print("Chatwoot message received: ${jsMessage.message}");
+            log("Chatwoot message received: ${jsMessage.message}");
             final message = getMessage(jsMessage.message);
             if (isJsonString(message)) {
               final parsedMessage = jsonDecode(message);
+              log("Chatwoot parsed message: ${parsedMessage}");
               final eventType = parsedMessage["event"];
               final type = parsedMessage["type"];
               if (eventType == 'loaded') {
@@ -140,7 +143,10 @@ class _WebviewState extends State<Webview> {
   @override
   Widget build(BuildContext context) {
     return _controller != null
-        ? WebViewWidget(controller: _controller!)
+        ? WebViewWidget(
+            controller: _controller!,
+
+          )
         : SizedBox();
   }
 
