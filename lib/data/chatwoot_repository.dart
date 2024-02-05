@@ -4,6 +4,7 @@ import 'dart:core';
 
 import 'package:chatwoot_sdk/chatwoot_callbacks.dart';
 import 'package:chatwoot_sdk/chatwoot_client.dart';
+import 'package:chatwoot_sdk/data/local/entity/chatwoot_conversation.dart';
 import 'package:chatwoot_sdk/data/local/entity/chatwoot_user.dart';
 import 'package:chatwoot_sdk/data/local/local_storage.dart';
 import 'package:chatwoot_sdk/data/remote/chatwoot_client_exception.dart';
@@ -30,6 +31,8 @@ abstract class ChatwootRepository {
   ChatwootRepository(this.clientService, this.localStorage, this.callbacks);
 
   Future<void> initialize(ChatwootUser? user);
+
+  Future<ChatwootConversation?> getConversation();
 
   void getPersistedMessages();
 
@@ -109,6 +112,19 @@ class ChatwootRepositoryImpl extends ChatwootRepository {
     }
 
     listenForEvents();
+  }
+
+  Future<ChatwootConversation?> getConversation() async {
+    final conversations = await clientService.getConversations();
+    final persistedConversation =
+        localStorage.conversationDao.getConversation()!;
+    final refreshedConversation = conversations.firstWhere(
+        (element) => element.id == persistedConversation.id,
+        orElse: () =>
+            persistedConversation //highly unlikely orElse will be called but still added it just in case
+        );
+    localStorage.conversationDao.saveConversation(refreshedConversation);
+    return refreshedConversation;
   }
 
   ///Sends message to chatwoot inbox

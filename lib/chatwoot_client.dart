@@ -199,30 +199,8 @@ class ChatwootClient {
     return contact!;
   }
 
-  static Future<ChatwootConversation?> getConversation(
-      {required String baseUrl,
-      required String inboxIdentifier,
-      String? userIdentifier}) async {
-    final clientInstanceKey = getClientInstanceKey(
-        baseUrl: baseUrl,
-        inboxIdentifier: inboxIdentifier,
-        userIdentifier: userIdentifier);
-    providerContainerMap.putIfAbsent(
-        clientInstanceKey, () => ProviderContainer());
-    final container = providerContainerMap[clientInstanceKey]!;
-    final params = ChatwootParameters(
-        isPersistenceEnabled: true,
-        baseUrl: baseUrl,
-        inboxIdentifier: inboxIdentifier,
-        clientInstanceKey: clientInstanceKey);
-
-    final localStorage = container.read(localStorageProvider(params));
-    final contact = localStorage.contactDao.getContact();
-    if (contact == null) {
-
-    }
-    final conversation = localStorage.conversationDao.getConversation();
-    container.dispose();
-    return conversation!;
+  Future<ChatwootConversation?> getConversation() async {
+    final conversation = await _repository.getConversation();
+    return conversation;
   }
 }
