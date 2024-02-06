@@ -63,6 +63,7 @@ class Webview extends StatefulWidget {
 
 class _WebviewState extends State<Webview> {
   WebViewController? _controller;
+  late final WebViewCookieManager cookieManager = WebViewCookieManager();
   @override
   void initState() {
     super.initState();
@@ -95,6 +96,9 @@ class _WebviewState extends State<Webview> {
                 widget.onLoadStarted?.call();
               },
               onPageFinished: (String url) async {
+                final String cookies = await _controller
+                    ?.runJavaScriptReturningResult('document.cookie') as String;
+                log("Cookies finish: $cookies");
                 widget.onLoadCompleted?.call();
               },
               onWebResourceError: (WebResourceError error) {
@@ -128,6 +132,14 @@ class _WebviewState extends State<Webview> {
               }
             }
           })
+          ..addJavaScriptChannel("parent",
+              onMessageReceived: (JavaScriptMessage jsMessage) async {
+            print("Chatwoot message received: ${jsMessage.message}");
+            log("Chatwoot message received: ${jsMessage.message}");
+            final String cookies = await _controller
+                ?.runJavaScriptReturningResult('document.cookie') as String;
+            log("Cookies parent: $cookies");
+          })
           ..loadRequest(Uri.parse(webviewUrl));
 
         if (Platform.isAndroid && widget.onAttachFile != null) {
@@ -145,12 +157,28 @@ class _WebviewState extends State<Webview> {
     return _controller != null
         ? WebViewWidget(
             controller: _controller!,
-
           )
         : SizedBox();
   }
 
   _goToUrl(String url) {
     launchUrl(Uri.parse(url));
+  }
+
+  Future<void> _onListCookies(BuildContext context) async {
+    final String cookies = await _controller
+        ?.runJavaScriptReturningResult('document.cookie') as String;
+    // if (context.mounted) {
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Column(
+    //       mainAxisAlignment: MainAxisAlignment.end,
+    //       mainAxisSize: MainAxisSize.min,
+    //       children: <Widget>[
+    //         const Text('Cookies:'),
+    //         _getCookieList(cookies),
+    //       ],
+    //     ),
+    //   ));
+    // }
   }
 }
