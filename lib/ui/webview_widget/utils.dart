@@ -64,6 +64,10 @@ class StoreHelper {
     return cookie ?? "";
   }
 
+  static Future<void> clearCookie() async {
+    await secureStorage.delete(key: cookieKey);
+  }
+
   static storeCookie(value) async {
     await secureStorage.write(key: cookieKey, value: value);
   }
