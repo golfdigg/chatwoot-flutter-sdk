@@ -136,9 +136,16 @@ class _WebviewState extends State<Webview> {
               onMessageReceived: (JavaScriptMessage jsMessage) async {
             print("Chatwoot message received: ${jsMessage.message}");
             log("Chatwoot message received: ${jsMessage.message}");
-            final String cookies = await _controller
-                ?.runJavaScriptReturningResult('document.cookie') as String;
-            log("Cookies parent: $cookies");
+            final message = getMessage(jsMessage.message);
+            if (isJsonString(message)) {
+              final parsedMessage = jsonDecode(message);
+              final eventType = parsedMessage["event"];
+              final type = parsedMessage["type"];
+              if (eventType == 'setAuthCookie') {
+                final authToken = parsedMessage["data"]["widgetAuthToken"];
+                StoreHelper.storeCookie(authToken);
+              }
+            }
           })
           ..loadRequest(Uri.parse(webviewUrl));
 
