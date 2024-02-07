@@ -29,6 +29,10 @@ class ChatwootWidget extends StatefulWidget {
   ///Widget Load started event
   final void Function()? onLoadStarted;
 
+  final void Function(String)? onChatwootHandler;
+
+  final void Function(String)? onGolfdiggHandler;
+
   ///Widget Load progress event
   final void Function(int)? onLoadProgress;
 
@@ -44,6 +48,8 @@ class ChatwootWidget extends StatefulWidget {
       this.closeWidget,
       this.onAttachFile,
       this.onLoadStarted,
+      this.onChatwootHandler,
+      this.onGolfdiggHandler,
       this.onLoadProgress,
       this.onLoadCompleted})
       : super(key: key);
@@ -69,6 +75,8 @@ class _ChatwootWidgetState extends State<ChatwootWidget> {
       closeWidget: widget.closeWidget,
       onAttachFile: widget.onAttachFile,
       onLoadStarted: widget.onLoadStarted,
+      onChatwootHandler: widget.onChatwootHandler,
+      onGolfdiggHandler: widget.onGolfdiggHandler,
       onLoadCompleted: widget.onLoadCompleted,
       onLoadProgress: widget.onLoadProgress,
     );
