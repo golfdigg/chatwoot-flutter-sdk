@@ -31,6 +31,10 @@ class Webview extends StatefulWidget {
   /// See [ChatwootWidget.onLoadStarted]
   final void Function()? onLoadStarted;
 
+  final void Function(String)? onChatwootHandler;
+
+  final void Function(String)? onGolfdiggHandler;
+
   /// See [ChatwootWidget.onLoadProgress]
   final void Function(int)? onLoadProgress;
 
@@ -47,6 +51,8 @@ class Webview extends StatefulWidget {
       this.closeWidget,
       this.onAttachFile,
       this.onLoadStarted,
+      this.onChatwootHandler,
+      this.onGolfdiggHandler,
       this.onLoadProgress,
       this.onLoadCompleted})
       : super(key: key) {
@@ -108,6 +114,20 @@ class _WebviewState extends State<Webview> {
                 // _goToUrl(request.url);
                 print("Navigation request: ${request.url}");
                 print("Navigation request: ${request}");
+                final uri = Uri.parse(request.url);
+                if (uri.scheme == 'chatwoothandle') {
+                  final message = getMessage(uri.query);
+                  widget.onChatwootHandler?.call(request.url);
+                  return NavigationDecision.prevent;
+                }
+                if (uri.scheme == 'mailto' || uri.scheme == 'tel') {
+                  launchUrl(uri);
+                  return NavigationDecision.prevent;
+                }
+                if (uri.scheme == 'golfdigg') {
+                  widget.onGolfdiggHandler?.call(request.url);
+                  return NavigationDecision.prevent;
+                }
                 return NavigationDecision.navigate;
               },
             ),
